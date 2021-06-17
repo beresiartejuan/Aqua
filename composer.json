@@ -1,0 +1,7 @@
+{
+    "require": {
+        "faapz/pdo": "^2.1",
+        "twig/twig": "3.0",
+        "bramus/router": "~1.5"
+    }
+}
