@@ -12,4 +12,8 @@ class User extends BaseController{
         $_SESSION['USER'] = self::$model->login($data);
         header('Location: /home');
     }
+
+    public static function singup($data){
+
+    }
 }
