@@ -1,19 +1,26 @@
 <?php
 
-class User extends BaseController{
+class UserController extends BaseController{
 
-    public static function login($data){
-        //echo self::$data;
+    public function login($data){
+
         $data['password'] = md5(
             $data['password'] . explode('@', $data['email'])[0]
         );
 
-        self::set_model('User', true);
-        $_SESSION['USER'] = self::$model->login($data);
-        header('Location: /home');
+        $this->model = new UserModel;
+
+	if($this->model->login($data['email'], $data['password'])){
+
+		$_SESSION['USER'] = $this->model->selectByEmail($data['email']);
+		header('location: /home');
+
+	}else{
+		Message::error('Correo o contraseña incorrectos');
+	}
     }
 
-    public static function singup($data){
+    public function singup($data){
 
     }
 }

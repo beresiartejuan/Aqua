@@ -2,11 +2,11 @@
 
 class BaseController{
 
-    public static array $data;
-    public static object $model;
+    public array $data;
+    public object $model;
+    public object $tmp;
 
-    public static function set_model($model, $static = false){
-        unset(self::$model);
-        self::$model = ($static) ? $model : new $model;
+    public function __construct($provisional_engine = null){
+	$this->tmp = (is_null($provisional_engine)) ? $GLOBAL['tmp'] : $provisional_engine;
     }
 }
