@@ -18,7 +18,7 @@ $tmp = new \Twig\Environment($loader, [
 
 $dsn = 'mysql:host='. $_CONFIG['Database']['host'] .';dbname='. $_CONFIG['Database']['name'] .';charset='. $_CONFIG['Database']['charset'];
 
-$pdo = new \FaaPz\PDO\Database($dsn, $_CONFIG['Database']['user'], $_CONFIG['Database']['password']);
+//$pdo = new \FaaPz\PDO\Database($dsn, $_CONFIG['Database']['user'], $_CONFIG['Database']['password']);
 
 import([
     'path' => 'helpers',

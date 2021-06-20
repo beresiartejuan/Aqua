@@ -11,9 +11,11 @@ $router->get('/', function() use ($tmp){
 $router->post('/login', function(){
 
     if(isset($_POST['login'])){
-        new User()->login($_POST);
+        $u = new User();
+        $u->login($_POST);
     }elseif(isset($_POST['singup'])){
-        new User()->singup($_POST);
+        $u = new User();
+        $u->singup($_POST);
     }else{
         Message::error('Intente de nuevo...');
     }
