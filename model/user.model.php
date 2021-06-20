@@ -4,13 +4,7 @@ class UserModel extends BaseModel {
 
     public function __construct(){
         parent::__construct();
-	$this->table = 'users';
-    }
-
-    public function select($field, $value){
-        $select = $driver->select()->from($this->table)->where($field, '=', $value);
-	$data = $select->execute();
-	return $data->fetch();
+        $this->table = 'users';
     }
 
     public function __call(string $name, array $arguments){
