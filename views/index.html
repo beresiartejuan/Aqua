@@ -10,8 +10,29 @@
         }
     }
 
+    .map-container{
+        display: flex;
+        align-items: center;
+        z-index: 70;
+        box-shadow: 3px 0px 18px 2px rgba(31,31,31,0.86);
+        -webkit-box-shadow: -1px 0px 18px 2px rgba(31,31,31,0.86);
+        -moz-box-shadow: -1px 0px 18px 2px rgba(31,31,31,0.86);
+    }
+
+    .map-container iframe {
+        display:block;
+        float:left;
+        margin: auto;
+    }
+
+    .map-container h3 {
+        display:block;
+        float:left;
+        margin: auto;
+    }
+
     .login-form {
-        top: 20%;
+        top: 25%;
         height: auto;
         width: 50vw;
     }
@@ -20,6 +41,26 @@
 
 {% block js %}
 <script>
+    function mostrarRegistro(event){
+        event.preventDefault();
+        document.getElementById('label-singup').classList.toggle('d-none');
+        document.getElementById('label-login').classList.toggle('d-none');
+        document.getElementById('form-name-input').classList.toggle('d-none');
+        document.getElementById('form-password2-input').classList.toggle('d-none');
+        document.getElementById('button').innerHTML = "Registrarse";
+        document.getElementById('title-form').innerHTML = "Crea una cuenta!";
+    }
+
+    function ocultarRegistro(event){
+        event.preventDefault();
+        document.getElementById('label-login').classList.toggle('d-none');
+        document.getElementById('label-singup').classList.toggle('d-none');
+        document.getElementById('form-name-input').classList.toggle('d-none');
+        document.getElementById('form-password2-input').classList.toggle('d-none');
+        document.getElementById('button').innerHTML = "Ingresar";
+        document.getElementById('title-form').innerHTML = "Ingresa a tu cuenta!";
+    }
+
     function invalidForm() {
         var form = $(this);
         form.addClass("ani-vertical");
@@ -39,7 +80,7 @@
 {% block body %}
 <main>
 
-    <ul class="h-menu">
+    <ul class="h-menu" style="position: sticky; top: 0; left: 0; right: 0; z-index: 80;">
         <li class="m-2 mx-5 disabled"><a class="fg-dark">AQUA</a></li>
         <li class="m-2"><a href="#">Home</a></li>
         <li class="m-2"><a href="#login-container">Ingresar</a></li>
@@ -47,30 +88,80 @@
         <li class="m-2"><a href="#">Cart</a></li>
     </ul>
 
+    <div class="h-vh-50 bg-white">
+        <p>a</p>
+    </div>
+
+    <div class="bg-blue pt-10 pb-13" style="display: flex;align-items: center;">
+        <div class="icon-box border mx-auto bd-default" style="max-width: 20%;">
+            <div class="icon bg-cyan fg-white"><span class="mif-user"></span></div>
+            <div class="content p-4">
+                <div class="text-upper">Usuarios registrados</div>
+                <div class="text-upper text-bold text-lead">8012</div>
+            </div>
+        </div>
+        <div class="icon-box border bd-default mx-auto" style="max-width: 20%;">
+            <div class="icon bg-cyan fg-white"><span class="mif-cog"></span></div>
+            <div class="content p-4">
+                <div class="text-upper">Empresas registradas</div>
+                <div class="text-upper text-bold text-lead">63792</div>
+            </div>
+        </div>
+        <div class="icon-box border bd-default mx-auto" style="max-width: 20%;">
+            <div class="icon bg-cyan fg-white"><span class="mif-cog"></span></div>
+            <div class="content p-4">
+                <div class="text-upper">Lugares registrados</div>
+                <div class="text-upper text-bold text-lead">7552</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="h-vh-50 bg-white py-5 map-container">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13076.587555721184!2d-67.69974605696778!3d-34.97798525394893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96781a11c548fc9d%3A0xfa291ac4eb8ae6ae!2sGral.%20Alvear%2C%20Mendoza!5e0!3m2!1ses-419!2sar!4v1624312672218!5m2!1ses-419!2sar" 
+        width="550" height="350" allowfullscreen="" loading="lazy"></iframe>
+        <h3>Estamos en General Alvear, Mendoza.</h1>
+    </div>
+
     <div class="h-vh-100 bg-blue" id="login-container">
 
-        <form class="login-form bg-white p-6 mx-auto border bd-default win-shadow" data-role="validator"
+        <form class="login-form bg-white p-6 mx-auto border bd-default win-shadow" style="transition: all .3s" data-role="validator"
             action="javascript:" data-clear-invalid="2000" data-on-error-form="invalidForm"
             data-on-validate-form="validateForm">
 
             <span class="mif-vpn-lock mif-4x place-right" style="margin-top: -10px;"></span>
-            <h2 class="text-light">Ingresa a tu cuenta!</h2>
+            <h2 class="text-light" id="title-form">Ingresa a tu cuenta!</h2>
             <hr class="thin mt-4 mb-4 bg-white">
-            <div class="form-group">
-                <input type="text" data-role="input" data-prepend="<span class='mif-envelop'>"
+
+            <div id="form-name-input" class="form-group d-none">
+                <input type="text" data-role="input" data-prepend="<span class='mif-user'>"
+                    placeholder="Enter your full name..." data-validate="required">
+            </div>
+
+            <div id="form-email-input" class="form-group">
+                <input type="email" data-role="input" data-prepend="<span class='mif-envelop'>"
                     placeholder="Enter your email..." data-validate="required email">
             </div>
-            <div class="form-group">
+
+            <div id="form-password-input" class="form-group">
                 <input type="password" data-role="input" data-prepend="<span class='mif-key'>"
                     placeholder="Enter your password..." data-validate="required minlength=6">
             </div>
-            <div class="form-group">
-                <span>¿No tienes cuenta? <a href="">Regístrate</a></span>
+
+            <div id="form-password2-input" class="form-group d-none">
+                <input type="password" data-role="input" data-prepend="<span class='mif-key'>"
+                    placeholder="Confirm your password..." data-validate="required minlength=6">
             </div>
+
+            <div class="form-group">
+                <span id="label-login">¿No tienes cuenta? <a href="#" onclick="mostrarRegistro(event)">Regístrate</a></span>
+                <span id="label-singup" class="d-none">¿Ya tienes una cuenta? <a href="#" onclick="ocultarRegistro(event)">Ingresa aquí</a></span>
+            </div>
+
             <div class="form-group mt-5">
                 <input type="checkbox" data-role="checkbox" data-caption="Remember me" class="place-right">
-                <button class="button">Ingresar</button>
+                <button class="button" id="button">Ingresar</button>
             </div>
+
         </form>
 
     </div>
