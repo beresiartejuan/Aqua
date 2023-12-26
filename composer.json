@@ -21,6 +21,6 @@
         "phpunit/phpunit": "9.6"
     },
     "scripts": {
-        "test": "php .\\vendor\\phpunit\\phpunit\\phpunit tests"
+        "test": "./vendor/bin/phpunit tests"
     }
 }
