@@ -27,4 +27,19 @@ final class ValidateTest extends TestCase
 
         $this->assertNull($validator->getPointer());
     }
+
+    public function testPushANewRule()
+    {
+        $validator = new Validator();
+
+        $validator->field("username")->string();
+
+        $this->assertNotNull($validator->getPointer());
+
+        $this->assertNotEmpty($validator->getValidators());
+
+        $this->assertTrue($validator->check([
+            "username" => "Juanito123"
+        ]));
+    }
 }
