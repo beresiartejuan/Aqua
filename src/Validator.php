@@ -38,13 +38,11 @@ class Validator
             foreach ($rules as $rule) {
                 $result = new InvalidRuleException();
 
-                if (is_object($rule)) {
+                if($rule instanceof CustomRule){
                     $result = $rule::check($rule, $value, $alert);
-                }
-
-                if (is_string($rule)) {
+                }else{
                     $result = $rule::check($value, $alert);
-                }
+                }   
 
                 if ($result !== true) {
                     return $result;
