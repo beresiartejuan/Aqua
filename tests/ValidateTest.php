@@ -3,8 +3,12 @@
 namespace Beresiartejuan\AquaTest;
 
 use Beresiartejuan\Aqua\Exceptions\PointerMustNotBeNull;
-use PHPUnit\Framework\TestCase;
 use Beresiartejuan\Aqua\Validator;
+use PHPUnit\Framework\TestCase;
+
+class ExampleException extends \Exception
+
+{}
 
 final class ValidateTest extends TestCase
 {
@@ -36,10 +40,48 @@ final class ValidateTest extends TestCase
 
         $this->assertNotNull($validator->getPointer());
 
-        $this->assertNotEmpty($validator->getValidators());
+        $this->assertNotEmpty($validator->getRules());
 
         $this->assertTrue($validator->check([
-            "username" => "Juanito123"
+            "username" => "Juanito123",
         ]));
+    }
+
+    public function testCheckCustomRule()
+    {
+
+        $validator = new Validator();
+
+        $validator->field("username")->string();
+        $validator
+            ->field("password")
+            ->string()
+            ->custom(function (string $password) {
+                if (strlen($password) < 4) {
+                    throw new ExampleException("Your password must be more large");
+                }
+            });
+
+        $result_true = $validator->check([
+            "username" => "Juanito",
+            "password" => "ContraseñaSegura",
+        ]);
+
+        $this->assertTrue($result_true);
+
+        $exception = $validator->check([
+            "username" => "Juanito",
+            "password" => "12",
+        ], false);
+
+        $this->assertInstanceOf(ExampleException::class, $exception);
+
+        $this->expectException(ExampleException::class);
+
+        $validator->check([
+            "username" => "Juanito",
+            "password" => "12",
+        ], true);
+
     }
 }

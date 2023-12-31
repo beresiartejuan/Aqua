@@ -1,10 +1,10 @@
 <?php
 
-namespace Beresiartejuan\AquaTest;
+namespace Beresiartejuan\AquaTest\Rules;
 
 use Beresiartejuan\Aqua\Exceptions\MustBeAStringException;
-use PHPUnit\Framework\TestCase;
 use Beresiartejuan\Aqua\Rules\MustBeAString;
+use PHPUnit\Framework\TestCase;
 
 final class MustBeAStringTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 namespace Beresiartejuan\Aqua\Rules;
 
-use Beresiartejuan\Aqua\Exceptions\MustBeAStringException;
+use Beresiartejuan\Aqua\Exceptions\MustBeNotEmptyException;
 
-class MustBeAString extends Rule implements RuleInterface
+class MustBeNotEmpty extends Rule implements RuleInterface
 {
     public static function check(mixed $value, bool $warning = true): true | \Exception
     {
-        if (!is_string($value)) {
+        if (empty($value)) {
 
-            $exception = new MustBeAStringException("The value must be a string");
+            $exception = new MustBeNotEmptyException("The value must not be empty");
 
             if ($warning) {
                 throw $exception;

@@ -2,7 +2,7 @@
 
 namespace Beresiartejuan\Aqua\Exceptions;
 
-class MustBeAStringException extends \Exception
+class MustBeNotEmptyException extends \Exception
 
 {
 }

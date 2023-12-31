@@ -2,12 +2,16 @@
 
 namespace Beresiartejuan\Aqua;
 
+use Beresiartejuan\Aqua\Exceptions\InvalidRuleException;
 use Beresiartejuan\Aqua\Exceptions\PointerMustNotBeNull;
+use Beresiartejuan\Aqua\Rules\CustomRule;
+use Beresiartejuan\Aqua\Rules\MustBeANumber;
 use Beresiartejuan\Aqua\Rules\MustBeAString;
+use Beresiartejuan\Aqua\Rules\MustBeNotEmpty;
 
 class Validator
 {
-    protected array $validators = [];
+    protected array $rules = [];
 
     protected string|null $pointer = null;
 
@@ -15,13 +19,13 @@ class Validator
     {
     }
 
-    public function check(object|array $obj)
+    public function check(object | array $obj, bool $alert = false)
     {
         $obj = (array) $obj;
 
-        foreach ($this->validators as $validator) {
+        foreach ($this->rules as $actual_pointer => $rules) {
 
-            $pointers = explode(".", $validator["pointer"]);
+            $pointers = explode(".", $actual_pointer);
 
             $number_of_pointers = count($pointers);
 
@@ -31,9 +35,22 @@ class Validator
                 $value = $obj[$pointers[$i]];
             }
 
-            $rule = $validator["rule"];
+            foreach ($rules as $rule) {
+                $result = new InvalidRuleException();
 
-            $rule::check($value);
+                if (is_object($rule)) {
+                    $result = $rule::check($rule, $value, $alert);
+                }
+
+                if (is_string($rule)) {
+                    $result = $rule::check($value, $alert);
+                }
+
+                if ($result !== true) {
+                    return $result;
+                }
+
+            }
         }
 
         return true;
@@ -44,54 +61,62 @@ class Validator
         return $this->pointer;
     }
 
-    public function getValidators()
+    public function getRules()
     {
-        return $this->validators;
+        return $this->rules;
     }
 
     public function field(string $name): Validator
     {
         $this->pointer = $name;
 
+        if (!array_key_exists($this->pointer, $this->rules)) {
+            $this->rules[$this->pointer] = [];
+        }
+
         return $this;
     }
 
     public function string(): Validator
     {
-        if (!$this->pointer) throw new PointerMustNotBeNull();
+        if (!$this->pointer) {
+            throw new PointerMustNotBeNull();
+        }
 
-        array_push($this->validators, [
-            "pointer" => $this->pointer,
-            "rule" => MustBeAString::class
-        ]);
+        array_push($this->rules[$this->pointer], MustBeAString::class);
 
         return $this;
     }
 
     public function number(): Validator
     {
-        if (!$this->pointer) throw new PointerMustNotBeNull();
+        if (!$this->pointer) {
+            throw new PointerMustNotBeNull();
+        }
+
+        array_push($this->rules[$this->pointer], MustBeANumber::class);
 
         return $this;
     }
 
-    public function not(): Validator
+    public function notEmpty(): Validator
     {
-        if (!$this->pointer) throw new PointerMustNotBeNull();
+        if (!$this->pointer) {
+            throw new PointerMustNotBeNull();
+        }
 
-        return $this;
-    }
-
-    public function empty(): Validator
-    {
-        if (!$this->pointer) throw new PointerMustNotBeNull();
+        array_push($this->rules[$this->pointer], MustBeNotEmpty::class);
 
         return $this;
     }
 
     public function custom(callable $callback): Validator
     {
-        if (!$this->pointer) throw new PointerMustNotBeNull();
+        if (!$this->pointer) {
+            throw new PointerMustNotBeNull();
+        }
+
+        array_push($this->rules[$this->pointer], new CustomRule($callback));
 
         return $this;
     }
