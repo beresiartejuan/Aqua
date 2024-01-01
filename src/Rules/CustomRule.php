@@ -11,7 +11,7 @@ class CustomRule
         $this->rule = $rule;
     }
 
-    public static function check(CustomRule $custom, mixed $value, bool $warning): bool | \Exception
+    public static function check(CustomRule $custom, mixed $value, bool $warning = true): bool | \Exception
     {
         $rule = $custom->rule;
 
@@ -32,7 +32,7 @@ class CustomRule
         return new \Exception("CustomRule must be callable");
     }
 
-    public function __invoke(CustomRule $custom, mixed $value, bool $warning = true): true | \Exception
+    public function __invoke(CustomRule $custom, mixed $value, bool $warning = true): bool | \Exception
     {
         return $this::check($custom, $value, $warning);
     }
