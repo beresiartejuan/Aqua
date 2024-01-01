@@ -11,7 +11,7 @@ class CustomRule
         $this->rule = $rule;
     }
 
-    public static function check(CustomRule $custom, mixed $value, bool $warning): true | \Exception
+    public static function check(CustomRule $custom, mixed $value, bool $warning): bool | \Exception
     {
         $rule = $custom->rule;
 
