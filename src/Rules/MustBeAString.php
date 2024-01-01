@@ -6,7 +6,7 @@ use Beresiartejuan\Aqua\Exceptions\MustBeAStringException;
 
 class MustBeAString extends Rule implements RuleInterface
 {
-    public static function check(mixed $value, bool $warning = true): true | \Exception
+    public static function check(mixed $value, bool $warning = true): bool | \Exception
     {
         if (!is_string($value)) {
 
@@ -22,7 +22,7 @@ class MustBeAString extends Rule implements RuleInterface
         return true;
     }
 
-    public function __invoke(mixed $value, bool $warning = true): true | \Exception
+    public function __invoke(mixed $value, bool $warning = true): bool | \Exception
     {
         return $this::check($value, $warning);
     }
