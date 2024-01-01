@@ -38,9 +38,6 @@ class Validator
             foreach ($rules as $rule) {
                 $result = new InvalidRuleException();
 
-                print_r($rule);
-                print_r("\n\n\n");
-
                 if ($rule instanceof CustomRule) {
                     $result = $rule::check($rule, $value, $alert);
                 } else {
